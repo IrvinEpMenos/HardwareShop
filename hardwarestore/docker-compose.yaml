@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  nextjs-app:
+    image: my-nextjs-app
+    build: .
+    container_name: nextjs-container
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token eyJhIjoiMTQ0YTVlNDJkOGI4NGM4N2ZhMzQ2NTliZjMxZGQ4YTAiLCJ0IjoiNDRmOWM1MjEtMGI1Zi00ODQ0LTg0NmYtOThiYWI0ZmRlMzNkIiwicyI6Ik9UTTRNV00wWXpNdE5qSTVNaTAwWmpnd0xUZ3lZakV0TURJM1lqa3hNalkzT0RrMiJ9
