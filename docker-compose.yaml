@@ -8,9 +8,21 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    networks:
+      - app-network
 
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared-tunnel
     restart: unless-stopped
-    command: tunnel --no-autoupdate run --token eyJhIjoiMTQ0YTVlNDJkOGI4NGM4N2ZhMzQ2NTliZjMxZGQ4YTAiLCJ0IjoiNDRmOWM1MjEtMGI1Zi00ODQ0LTg0NmYtOThiYWI0ZmRlMzNkIiwicyI6Ik9UTTRNV00wWXpNdE5qSTVNaTAwWmpnd0xUZ3lZakV0TURJM1lqa3hNalkzT0RrMiJ9
+    depends_on:
+      - nextjs-app
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    environment:
+      - TUNNEL_URL=http://nextjs-app:3000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
